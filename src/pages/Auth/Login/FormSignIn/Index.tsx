@@ -17,11 +17,12 @@ import { signInFormSchema } from './schemas'
 import { useToast } from '@/components/ui/use-toast'
 import { ZapFormValues } from './types'
 import { Link } from 'react-router-dom'
-import { axiosI } from '@/components/services/axios'
+import { axiosUrlBase } from '@/components/services/axios'
 
 const defaultValues: Partial<ZapFormValues> = {
   email: '',
-  password: '',
+  senha: '',
+  instalacao: '',
 }
 
 export default function FormSignIn() {
@@ -45,7 +46,7 @@ export default function FormSignIn() {
     })
 
   function onSubmit(data: ZapFormValues) {
-    axiosI.post('/token', data)
+    axiosUrlBase.post('/conta/download', data)
     console.log('enviado')
 
     Toast(data)
@@ -71,7 +72,7 @@ export default function FormSignIn() {
           />
           <FormField
             control={form.control}
-            name="password"
+            name="senha"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Senha</FormLabel>
@@ -79,6 +80,20 @@ export default function FormSignIn() {
                   <Input placeholder="senhaSECRETA123" {...field} />
                 </FormControl>
                 <FormDescription>Digite sua senha.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="instalacao"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Instalação</FormLabel>
+                <FormControl>
+                  <Input placeholder="32145313" {...field} />
+                </FormControl>
+                <FormDescription>Digite sua instalação.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
