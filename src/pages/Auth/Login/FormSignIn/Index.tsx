@@ -16,8 +16,8 @@ import { useForm } from 'react-hook-form'
 import { signInFormSchema } from './schemas'
 import { useToast } from '@/components/ui/use-toast'
 import { ZapFormValues } from './types'
-import { Link } from 'react-router-dom'
 import { axiosUrlBase } from '@/components/services/axios'
+import { useNavigate } from 'react-router-dom'
 
 const defaultValues: Partial<ZapFormValues> = {
   email: '',
@@ -28,28 +28,32 @@ const defaultValues: Partial<ZapFormValues> = {
 export default function FormSignIn() {
   const { toast } = useToast()
 
+  const navigate = useNavigate()
   const form = useForm<ZapFormValues>({
     resolver: zodResolver(signInFormSchema),
     defaultValues,
     mode: 'onChange',
   })
 
-  const Toast = (data: ZapFormValues) =>
-    toast({
-      variant: 'sucess',
-      title: 'Você enviou os seguintes valores:',
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+  async function onSubmit(data: ZapFormValues) {
+    try {
+      const response = await axiosUrlBase.post('/conta/download', data)
 
-  function onSubmit(data: ZapFormValues) {
-    axiosUrlBase.post('/conta/download', data)
-    console.log('enviado')
-
-    Toast(data)
+      if (response.status === 200) {
+        toast({
+          variant: 'sucess',
+          title: 'Tudo certinho!',
+        })
+        navigate('/accounts')
+      }
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Entrou com erro.',
+      })
+      navigate('/accounts')
+      console.error('Erro durante a chamada à API:', error)
+    }
   }
 
   return (
@@ -106,15 +110,6 @@ export default function FormSignIn() {
             type="submit"
           >
             Login
-          </Button>
-          <h1>Ou</h1>
-          <Button
-            asChild
-            variant="link"
-            className="transition-all  active:scale-95   w-fit mt-[-15px]"
-            type="submit"
-          >
-            <Link to="/sign-up">Cadastrar</Link>
           </Button>
         </section>
       </form>
