@@ -17,6 +17,7 @@ import { signInFormSchema } from './schemas'
 import { useToast } from '@/components/ui/use-toast'
 import { ZapFormValues } from './types'
 import { Link } from 'react-router-dom'
+import { axiosI } from '@/components/services/axios'
 
 const defaultValues: Partial<ZapFormValues> = {
   email: '',
@@ -32,7 +33,7 @@ export default function FormSignIn() {
     mode: 'onChange',
   })
 
-  function onSubmit(data: ZapFormValues) {
+  const Toast = (data: ZapFormValues) =>
     toast({
       variant: 'sucess',
       title: 'Você enviou os seguintes valores:',
@@ -42,6 +43,12 @@ export default function FormSignIn() {
         </pre>
       ),
     })
+
+  function onSubmit(data: ZapFormValues) {
+    axiosI.post('/token', data)
+    console.log('enviado')
+
+    Toast(data)
   }
 
   return (
