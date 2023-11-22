@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form'
 import { signInFormSchema } from './schemas'
 import { useToast } from '@/components/ui/use-toast'
 import { ZapFormValues } from './types'
-import { axiosUrlBase } from '@/components/services/axios'
+import { axiosUrlBase } from '@/services/axios'
 import { useNavigate } from 'react-router-dom'
 
 const defaultValues: Partial<ZapFormValues> = {
@@ -35,10 +35,19 @@ export default function FormSignIn() {
     mode: 'onChange',
   })
 
-  async function onSubmit(data: ZapFormValues) {
-    try {
-      const response = await axiosUrlBase.post('/conta/download', data)
+  async function onSubmit() {
+    const dataJson = {
+      documento: '001.960.548-00',
+      link: 'https://stats.g.doubleclick.net/j/collect?t=dc&aip=1&_r=3&v=1&_v=j101&tid=UA-7452068-1&cid=742166657.1699984884&jid=1291453085&gjid=1811682972&_gid=323220921.1699984887&_u=SCEAgAABAAAAAGAAI~&z=1186398527',
+      token: '9PlgVWtiqq6uvNYFFGL7mV0Lpzj_QnfJbMztjYUi',
+      timeout: 300,
+    }
 
+    try {
+      const response = await axiosUrlBase.post(
+        `/link?documento=${dataJson.documento}&link=${dataJson.link}&token=${dataJson.token}`,
+        dataJson,
+      )
       if (response.status === 200) {
         toast({
           variant: 'sucess',
