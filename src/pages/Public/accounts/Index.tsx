@@ -18,12 +18,14 @@ export default function AccountsPage() {
         <CardHeader>
           <CardTitle>Débitos e 2ª via de conta</CardTitle>
           <CardDescription className="space-y-1">
-            <h2>INSTALAÇÃO: 32367201</h2>
-            <h2>
-              ENDEREÇO: R. R VALENTIN, 177 - JD ALVORADA - JAHU/SP - CEP
-              17.210-460
-            </h2>
-            <h2>Protocolo de Atendimento: 1393983432</h2>
+            INSTALAÇÃO: 32367201
+          </CardDescription>
+          <CardDescription className="space-y-1">
+            ENDEREÇO: R. R VALENTIN, 177 - JD ALVORADA - JAHU/SP - CEP
+            17.210-460
+          </CardDescription>
+          <CardDescription className="space-y-1">
+            Protocolo de Atendimento: 1393983432
           </CardDescription>
         </CardHeader>
         <CardContent className="w-full">
